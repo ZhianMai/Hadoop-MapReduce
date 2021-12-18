@@ -26,9 +26,9 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
     Text text = new Text();
     LongWritable longWritable = new LongWritable();
 
-    String[] split = value.toString().split(" ");
+    String[] splitInput = value.toString().split(" ");
 
-    for (String world : split) {
+    for (String world : splitInput) {
       text.set(world);
       longWritable.set(1);
       context.write(text, longWritable);

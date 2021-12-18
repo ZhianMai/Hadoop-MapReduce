@@ -30,7 +30,7 @@ public class WordCountMain extends Configured implements Tool {
   public int run(String[] args) throws Exception {
     // Create a job task object, the configuration object should be the one
     // that passed into the ToolRunner.run()
-    Job job = Job.getInstance(super.getConf(), "Word_Count");
+    Job job = Job.getInstance(super.getConf(), JOB_NAME);
 
     // Config job
     // Basics: IO (path, format), mapper<key, val>, reducer<key, val>
@@ -42,15 +42,16 @@ public class WordCountMain extends Configured implements Tool {
       inputPath = new Path(HDFS_FORMAT_MAPREDUCE_LOCAL_PATH + INPUT_FILE_NAME);
       outputPath = new Path(HDFS_FORMAT_MAPREDUCE_LOCAL_PATH + "\\" + OUTPUT_DIR_NAME);
 
-      // Delete output file if exist
+      // Delete output file if exist, or it will throw FileAlreadyExistsException
       FileUtils.deleteDirectory(new File(JAVA_FORMAT_MAPREDUCE_LOCAL_PATH + "\\" +
           OUTPUT_DIR_NAME));
     } else {
       // For local file system, Linux use '/', and Windows use '/'
       inputPath = new Path(HDFS_URL + "/" + OUTPUT_DIR_NAME);
       outputPath = new Path(HDFS_URL + "/" + OUTPUT_DIR_NAME);
+      job.setJarByClass(WordCountMain.class); // Avoid .jar runtime error
 
-      // Delete output file if exist
+      // Delete output file if exist, or it will throw FileAlreadyExistsException
       FileSystem fileSystem = FileSystem.get(new URI(HDFS_URL), new Configuration());
 
       if (fileSystem.exists(outputPath)) {

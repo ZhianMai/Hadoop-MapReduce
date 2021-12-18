@@ -1,5 +1,9 @@
 # Hadoop MapReduce
 
+<p align="center">
+  <img src="https://github.com/ZhianMai/ZhianMai/blob/main/img/mapreduce.jpg" width="492" height="180" />
+</p>
+
 The repo contains the Hadoop MapReduce demo in Java.
 
  - Hadoop version: 2.7.5
