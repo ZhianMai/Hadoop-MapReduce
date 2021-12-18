@@ -56,15 +56,15 @@ The task is to count the frequency of each word.
 
  1. Input: text file.
  2. Mapper
-    - input <key1, val1>: <line number, String of that line>, like <2, "mapreduce hdfs run">
-    - task: split the string by space ' '
-    - output <key2, val2>: <single word, 1 (constant)>, like <"mapreduce", 1>, <"hdfs", 1>, <"run", 1>
+    - Input <key1, val1>: <line number, String of that line>, like <2, "mapreduce hdfs run">
+    - Task: split the string by space ' '
+    - Output <key2, val2>: <single word, 1 (constant)>, like <"mapreduce", 1>, <"hdfs", 1>, <"run", 1>
     
  3. Shuffle: this demo does not need this step yet...
- 4. Shuffle
-    - input <key2, val2>: from Mapper <key2, val2>
-    - task: merge identical word and count their frequency
-    - output <key3, val3>: <unique single word, frequency>, like <"mapreduce", 1>, <"hdfs", 2>, <"run", 3>
+ 4. Reducer
+    - Input <key2, val2>: from Mapper <key2, val2>
+    - Task: merge identical word and count their frequency
+    - Output <key3, val3>: <unique single word, frequency>, like <"mapreduce", 1>, <"hdfs", 2>, <"run", 3>
     
  5. Output <key3, val3> to a text file. Here the file name is `part-r-00000`. The result in the output file is:
 ```text
