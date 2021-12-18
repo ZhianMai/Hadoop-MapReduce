@@ -39,8 +39,6 @@ The MapReduce concept is difficult to describe without examples, so I will use e
 
 ## MapReduce Examples
 
-<hr />
-
 ### Word Count :link:[Link](/src/main/java/mapreduce/word_count)
 
 The input file format is many lines of words separated by single space ' '.
