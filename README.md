@@ -11,8 +11,7 @@ The repo contains the Hadoop MapReduce demo in Java.
 
 When running the mapreduce job in windows, it may throw an exception:
 
-`java.lang.UnsatisfiedLinkError: org.apache.hadoop.util.NativeCrc32.nativeCompute 
-ChunkedSumsByteArray(II[BI[BIILjava/lang/String;JZ)V`
+`java.lang.UnsatisfiedLinkError: org.apache.hadoop.util.NativeCrc32.nativeCompute ChunkedSumsByteArray(II[BI[BIILjava/lang/String;JZ)V`
 
 This is because the HDFS is not compatible to the Windows file system. Visit the link bellow, 
 follow the steps, and restart the pc, then this error should be fixed.
