@@ -22,14 +22,13 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
   protected void map(LongWritable key, Text value, Context context)
       throws IOException, InterruptedException {
 
+    // Ignore key
     Text text = new Text();
     LongWritable longWritable = new LongWritable();
 
-    // 1.将一行的文本进行拆分
     String[] split = value.toString().split(" ");
-    // 2.遍历数组, 组装 K2和V2
+
     for (String world : split) {
-      // 3.将K2和V2写入上下文
       text.set(world);
       longWritable.set(1);
       context.write(text, longWritable);
