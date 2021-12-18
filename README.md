@@ -37,6 +37,8 @@ Step 3, 4, and 5 can run in parallel.
 
 The MapReduce concept is difficult to describe without examples, so I will use examples to demo MapReduce.
 
+<br />
+
 ## MapReduce Examples
 
 ### Word Count :link:[Link](/src/main/java/mapreduce/word_count)
