@@ -45,7 +45,7 @@ The MapReduce concept is difficult to describe without examples, so I will use e
 
 ## MapReduce Examples
 
-### Word Count :link:[Link](/src/main/java/mapreduce/word_count)
+### 1. Word Count :link:[Link](/src/main/java/mapreduce/word_count)
 
 The input file format is many lines of words separated by single space ' '.
 ```text
@@ -81,7 +81,7 @@ test	3
 
 <hr />
 
-### Partition on Gender :link:[Link](/src/main/java/mapreduce/gender_partition)
+### 2. Partition on Gender :link:[Link](/src/main/java/mapreduce/gender_partition)
 
 The first step is to get some mock data from [here](https://www.mockaroo.com/). The data schema in the csv file is:
 ```text
@@ -122,5 +122,21 @@ To simplify the task, there is no logical task in the mapper and reducer: they j
    `part-r-00001`. The `part-r-00000` only contains "F", while the `part-r-00001` only contains "M".
    
 Caution: the data for partition must be included in the key that passing to the partitioner.
+
+<hr />
+
+### 3. Gender of Language Speaker & Counter :link:[Link](/src/main/java/mapreduce/gender_language)
+
+This demo uses the same data set as the demo 2. The task is to count how many speakers on each language,
+and separate the speakers by their gender. It also counts how many M & F using <i>user-defined counter</i>.
+
+Counter is a powerful util in MapReduce which can measure the number of specific operations or variable
+occurred in mapper and reducer. Counters fall into two categories:
+
+ - Built-in Counters: task counter, job counter, filesystem counter, I/O counter, etc.
+ - User-defined Counters: user can define a group of counters in mapper or reducer for specific measurements.
+
+In this demo, I create gender counters to count the gender of the people in the mock data. All counters will
+print on the console when the job is done.
 
 <hr />
