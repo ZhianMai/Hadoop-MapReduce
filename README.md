@@ -83,7 +83,7 @@ test	3
 
 ### Partition on Gender :link:[Link](/src/main/java/mapreduce/gender_partition)
 
-The first step is to get some mock data from [here](https://www.mockaroo.com/). The data schema in the csv file is
+The first step is to get some mock data from [here](https://www.mockaroo.com/). The data schema in the csv file is:
 ```text
 id  first_name  last_name   email   gender  ip_address  languages
 ```
@@ -95,7 +95,7 @@ A snippet of the data:
 3,Stafani,Gilhool,sgilhool2@imdb.com,F,134.110.57.112,Persian
 4,Gerek,Silliman,gsilliman3@yandex.ru,M,149.247.121.13,Telugu
 ```
-Each line is an entity, and each entry is separated by a comma.
+Each line is an entity, and each entry in the entity is separated by a comma.
 
 The task is to build a partitioner that can partition entries based on the gender, and feed into two reducers, say,
 "M" goes to reducer 1, and "F" goes to reducer 2.
