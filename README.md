@@ -97,8 +97,8 @@ A snippet of the data:
 ```
 Each line is an entity, and each entry in the entity is separated by a comma.
 
-The task is to build a partitioner that can partition entries based on the gender, and feed into two reducers, say,
-"M" goes to reducer 1, and "F" goes to reducer 2.
+The task is to build a partitioner that can partition entities based on the gender, and feed them into
+two reducers, say, "M" goes to reducer 1, and "F" goes to reducer 2.
 
 To simplify the task, there is no logical task in the mapper and reducer: they just output the "same" <key, val>.
 
@@ -112,14 +112,15 @@ To simplify the task, there is no logical task in the mapper and reducer: they j
     - Input <key2, val2>: <entity, NullWritable>
     - Read the "gender" entry from the entity
     - Assign to a specific reducer based on "M" or "F"
+    
 4. Reducer
     - Input <key2, val2>: from Shuffle <key2, NullWritable>
     - Task: none
-    - Output <key2>
+    - Output <key2, val2>
 
-5. Output <key2> to two text files. Here the file names are `part-r-00000` and `part-r-00001`. The `part-r-00000` 
-only contains "F", while the `part-r-00001` only contains "M".
+5. Output <key2, NullWritable> to two text files. Here the file names are `part-r-00000` and
+   `part-r-00001`. The `part-r-00000` only contains "F", while the `part-r-00001` only contains "M".
    
 Caution: the data for partition must be included in the key that passing to the partitioner.
 
-
+<hr />
