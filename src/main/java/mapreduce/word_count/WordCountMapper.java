@@ -25,11 +25,10 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
     // Ignore key
     Text text = new Text();
     LongWritable longWritable = new LongWritable();
-
     String[] splitInput = value.toString().split(" ");
 
     for (String world : splitInput) {
-      text.set(world);
+      text.set(world); // Reuse object
       longWritable.set(1);
       context.write(text, longWritable);
     }

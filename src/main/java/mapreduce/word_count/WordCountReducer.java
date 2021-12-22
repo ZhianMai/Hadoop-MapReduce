@@ -15,9 +15,9 @@ public class WordCountReducer extends Reducer<Text, LongWritable, Text, LongWrit
   /**
    * reducer: <KEY_IN, VALUE_IN> -> <KEY_OUT, VALUE_OUT>
    * KEY_IN: single word
-   * VALUE_IN: 1 (constant)
+   * VALUE_IN: set of 1 (constant)
    * KEY_OUT: single word
-   * VALUE_OUT: count of the KEY_OUT
+   * VALUE_OUT: count of its corresponding distinct KEY_OUT
    */
   @Override
   protected void reduce(Text key, Iterable<LongWritable> values, Context context)

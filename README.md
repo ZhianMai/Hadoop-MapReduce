@@ -64,9 +64,9 @@ The task is to count the frequency of each word.
     - Task: split the string by space ' '
     - Output <key2, val2>: <single word, 1 (constant)>, like <"mapreduce", 1>, <"hdfs", 1>, <"run", 1>
     
- 3. Shuffle: this demo does not need this step yet...
+ 3. Shuffle: merge the pair with same key, like <"mapreduce", [1,1,1]>
  4. Reducer
-    - Input <key2, val2>: from Mapper <key2, val2>
+    - Input <key2, val2>: from Shuffle <key2, valList>
     - Task: merge identical word and count their frequency
     - Output <key3, val3>: <unique single word, frequency>, like <"mapreduce", 1>, <"hdfs", 2>, <"run", 3>
     
@@ -80,4 +80,46 @@ test	3
 ```
 
 <hr />
+
+### Partition on Gender :link:[Link](/src/main/java/mapreduce/gender_partition)
+
+The first step is to get some mock data from [here](https://www.mockaroo.com/). The data schema in the csv file is
+```text
+id  first_name  last_name   email   gender  ip_address  languages
+```
+
+A snippet of the data:
+```text
+1,Tally,Tanner,ttanner0@php.net,M,31.37.234.117,Malay
+2,Elke,Cooksey,ecooksey1@imdb.com,F,253.198.7.212,Guaran??
+3,Stafani,Gilhool,sgilhool2@imdb.com,F,134.110.57.112,Persian
+4,Gerek,Silliman,gsilliman3@yandex.ru,M,149.247.121.13,Telugu
+```
+Each line is an entity, and each entry is separated by a comma.
+
+The task is to build a partitioner that can partition entries based on the gender, and feed into two reducers, say,
+"M" goes to reducer 1, and "F" goes to reducer 2.
+
+To simplify the task, there is no logical task in the mapper and reducer: they just output the "same" <key, val>.
+
+1. Input: .csv text file.
+2. Mapper
+    - Input <key1, val1>: <line number, String of that line>, like <1, "1,...,...,...,M,...,...">
+    - Task: none
+    - Output <key2, val2>: <val1, NullWritable as a placeholder>
+
+3. Shuffle: partition the data based on gender.
+    - Input <key2, val2>: <entity, NullWritable>
+    - Read the "gender" entry from the entity
+    - Assign to a specific reducer based on "M" or "F"
+4. Reducer
+    - Input <key2, val2>: from Shuffle <key2, NullWritable>
+    - Task: none
+    - Output <key2>
+
+5. Output <key2> to two text files. Here the file names are `part-r-00000` and `part-r-00001`. The `part-r-00000` 
+only contains "F", while the `part-r-00001` only contains "M".
+   
+Caution: the data for partition must be included in the key that passing to the partitioner.
+
 

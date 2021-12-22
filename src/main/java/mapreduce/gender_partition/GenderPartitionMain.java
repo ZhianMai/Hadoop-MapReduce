@@ -1,11 +1,11 @@
-package mapreduce.word_count;
+package mapreduce.gender_partition;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -17,22 +17,18 @@ import java.io.File;
 import java.net.URI;
 
 import static mapreduce.utils.SystemPathConstant.*;
+import static mapreduce.utils.SystemPathConstant.HDFS_URL;
 
-public class WordCountMain extends Configured implements Tool {
+public class GenderPartitionMain extends Configured implements Tool {
   private static boolean isLocal = false;
-  private static final String INPUT_FILE_NAME = "\\input\\wordcount.txt";
-  private static final String OUTPUT_DIR_NAME = "word_count_output";
-  private static final String JOB_NAME = "Word_Count";
+  private static final String INPUT_FILE_NAME = "\\input\\MOCK_DATA_PERSON.csv";
+  private static final String OUTPUT_DIR_NAME = "gender_partition_output";
+  private static final String JOB_NAME = "gender_partition_mapreduce";
+  private static final int REDUCER_AMOUNT = 2;
 
-  // The main logic of job task
   @Override
-  public int run(String[] args) throws Exception {
-    // Create a job task object, the configuration object should be the one
-    // that passed into the ToolRunner.run()
+  public int run(String[] strings) throws Exception {
     Job job = Job.getInstance(super.getConf(), JOB_NAME);
-
-    // Config job
-    // Basics: IO (path, format), mapper<key, val>, reducer<key, val>
 
     Path inputPath;
     Path outputPath;
@@ -48,7 +44,7 @@ public class WordCountMain extends Configured implements Tool {
       // For local file system, Linux use '/', and Windows use '/'
       inputPath = new Path(HDFS_URL + "/" + OUTPUT_DIR_NAME);
       outputPath = new Path(HDFS_URL + "/" + OUTPUT_DIR_NAME);
-      job.setJarByClass(WordCountMain.class); // Avoid .jar runtime error
+      job.setJarByClass(GenderPartitionMain.class); // Avoid .jar runtime error
 
       // Delete output file if exist, or it will throw FileAlreadyExistsException
       FileSystem fileSystem = FileSystem.get(new URI(HDFS_URL), new Configuration());
@@ -65,25 +61,30 @@ public class WordCountMain extends Configured implements Tool {
     job.setOutputFormatClass(TextOutputFormat.class);
 
     // Setup Mapper and its output <key, val> format
-    job.setMapperClass(WordCountMapper.class);
+    job.setMapperClass(PartitionMapper.class);
     job.setMapOutputKeyClass(Text.class);
-    job.setMapOutputValueClass(LongWritable.class);
+    job.setMapOutputValueClass(NullWritable.class);
+
+    // Setup shuffle
+    job.setPartitionerClass(GenderPartitioner.class);
 
     // Setup Reducer and its output <key, val> format
-    job.setReducerClass(WordCountReducer.class);
+    job.setReducerClass(PartitionReducer.class);
     job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(LongWritable.class);
+    job.setOutputValueClass(NullWritable.class);
+
+    job.setNumReduceTasks(REDUCER_AMOUNT);
 
     // wait till the job done
+    System.out.println("Running");
     boolean bl = job.waitForCompletion(true);
     return bl ? 0 : 1;
   }
 
   public static void main(String[] args) throws Exception {
-    Configuration configuration = new Configuration();
+    Configuration config = new Configuration();
     isLocal = true;
-    // ToolRunner.run() calls the run() method above as the job task
-    int run = ToolRunner.run(configuration, new WordCountMain(), args);
-    System.exit(run);
+    int status = ToolRunner.run(config, new GenderPartitionMain(), args);
+    System.exit(status);
   }
 }
