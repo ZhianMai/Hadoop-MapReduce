@@ -66,7 +66,7 @@ public class SortPairMain extends Configured implements Tool {
     job.setOutputFormatClass(TextOutputFormat.class);
 
     // Setup Mapper and its output <key, val> format
-    job.setMapperClass(SortPairMapper.class); 
+    job.setMapperClass(SortPairMapper.class);
     job.setMapOutputKeyClass(CompareCharIntPair.class);
     job.setMapOutputValueClass(NullWritable.class);
 

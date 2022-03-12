@@ -140,3 +140,19 @@ In this demo, I create gender counters to count the gender of the people in the 
 print on the console when the job is done.
 
 <hr />
+
+### 4. Sorting <string, integer> Pair in Particular Order :link:[Link](/src/main/java/mapreduce/sort_char_int)
+
+The shuffle step in Hadoop MapReduce provides sorting functionality. If the java objects that being passed to the
+shuffle state has natural order, then they will be sorted to natural order before passing to Reducer.
+
+In this MapReduce demo, the input file is a set of <string, integer> pair. The goal is to sort them in this particular
+order:
+- the string should be in lexicographical order;
+- if two pairs whose string are equal in lexicographical order, then their integer be in ascending order.
+
+The java class `CompareCharIntPair` contains such natural order. So the mapper would read the input pair, then parse
+them as `CompareCharIntPair` objects. The shuffle step will sort them, then pass to a Reducer, who will write all sorted
+pairs into output file.
+
+<hr />
