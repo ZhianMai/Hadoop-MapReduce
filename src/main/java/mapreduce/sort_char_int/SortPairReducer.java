@@ -26,6 +26,8 @@ public class SortPairReducer extends Reducer<CompareCharIntPair, NullWritable,
       throws IOException, InterruptedException {
     Text text = new Text(key.getWord());
     LongWritable num = new LongWritable(key.getNum());
-    context.write(text, num);
+    for (NullWritable n : values) {
+      context.write(text, num);
+    }
   }
 }
