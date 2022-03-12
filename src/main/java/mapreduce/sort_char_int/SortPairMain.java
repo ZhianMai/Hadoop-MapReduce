@@ -21,7 +21,7 @@ import static mapreduce.utils.SystemPathConstant.*;
 
 public class SortPairMain extends Configured implements Tool {
   private static boolean isLocal = false;
-  private static final String INPUT_FILE_NAME = "\\input\\string_int_pair.txt";
+  private static final String INPUT_FOLDER_NAME = "\\input\\string_int_pair";
   private static final String OUTPUT_DIR_NAME = "sorted_pair_output";
   private static final String JOB_NAME = "sort_string_int_pair";
 
@@ -39,7 +39,7 @@ public class SortPairMain extends Configured implements Tool {
     Path outputPath;
 
     if (isLocal) {
-      inputPath = new Path(HDFS_FORMAT_MAPREDUCE_LOCAL_PATH + INPUT_FILE_NAME);
+      inputPath = new Path(READ_DIRECTORY + HDFS_FORMAT_MAPREDUCE_LOCAL_PATH + INPUT_FOLDER_NAME);
       outputPath = new Path(HDFS_FORMAT_MAPREDUCE_LOCAL_PATH + "\\" + OUTPUT_DIR_NAME);
 
       // Delete output file if exist, or it will throw FileAlreadyExistsException
