@@ -1,6 +1,7 @@
-package mapreduce.word_count;
+package mapreduce.sort_char_int;
 
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -10,7 +11,8 @@ import java.io.IOException;
  * Reducer class 4 generics:
  * <KEY_IN, VALUE_IN> & <KEY_OUT, VALUE_OUT>
  */
-public class WordCountReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
+public class SortPairReducer extends Reducer<CompareCharIntPair, NullWritable,
+                                             Text, LongWritable> {
 
   /**
    * reducer: <KEY_IN, VALUE_IN> -> <KEY_OUT, VALUE_OUT>
@@ -20,15 +22,10 @@ public class WordCountReducer extends Reducer<Text, LongWritable, Text, LongWrit
    * VALUE_OUT: count of its corresponding distinct KEY_OUT
    */
   @Override
-  protected void reduce(Text key, Iterable<LongWritable> values, Context context)
+  protected void reduce(CompareCharIntPair key, Iterable<NullWritable> values, Context context)
       throws IOException, InterruptedException {
-
-    long count = 0;
-    for (LongWritable value : values) {
-      count += value.get();
-      // count++;
-    }
-
-    context.write(key, new LongWritable(count));
+    Text text = new Text(key.getWord());
+    LongWritable num = new LongWritable(key.getNum());
+    context.write(text, num);
   }
 }
